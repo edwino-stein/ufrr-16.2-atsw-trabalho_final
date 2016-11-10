@@ -8,6 +8,8 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 
+use app\services\TwitterApi;
+
 class SiteController extends Controller
 {
     /**
@@ -57,7 +59,8 @@ class SiteController extends Controller
      * @return string
      */
     public function actionIndex(){
-        return $this->render('index');
+        var_dump(Yii::$app->twitter->get(TwitterApi::URL_STATUSES_TIMELINE));
+        // return $this->render('index');
     }
 
     /**
