@@ -41,7 +41,8 @@ $config = [
             'consumerKey' => 'CdRW6cTOwy6HHu4CbgZ1JR3eS',
             'consumerSecret' => 'rKHK1LPnnZ1lgvaOh6sen7D4ldbSqlfbcIXINzhqg3JQmrmwiJ',
             'accessToken' => '796543085786308608-Bi4A9VM4YtJUUzpxvK19Luq06PR7BTY',
-            'accessTokenSecret' => 'FhvnwrcJXtUDB1ovpyNW4X3AIzaTcPCYZjdOM6jMqmKPZ'
+            'accessTokenSecret' => 'FhvnwrcJXtUDB1ovpyNW4X3AIzaTcPCYZjdOM6jMqmKPZ',
+            'tweetModelClass' => app\models\Tweet::class
         ]
         /*
         'urlManager' => [

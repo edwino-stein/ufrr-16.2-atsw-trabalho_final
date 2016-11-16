@@ -9,6 +9,7 @@ class TwitterApi extends Component {
 
     const URL_ACCOUNT_VERIFY_CREDENTIALS = 'account/verify_credentials';
     const URL_STATUSES_TIMELINE = 'statuses/home_timeline';
+    const URL_SEARCH_TWEETS = 'search/tweets';
 
     /**
      * @var string
@@ -35,11 +36,23 @@ class TwitterApi extends Component {
      */
     protected $connection = null;
 
+    /**
+     * @var bool
+     */
+    protected $decodeJsonAsArray = true;
+
+    /**
+     * @var string|null
+     */
+    protected $tweetModelClass;
+
     public function __construct(array $config = []){
         $this->setConsumerKey($config['consumerKey'] ?? '')
              ->setConsumerSecret($config['consumerSecret'] ?? '')
              ->setAccessToken($config['accessToken'] ?? '')
              ->setAccessTokenSecret($config['accessTokenSecret'] ?? '');
+
+        $this->tweetModelClass = $config['tweetModelClass'] ?? null;
     }
 
     public function __invoke(){
@@ -53,6 +66,8 @@ class TwitterApi extends Component {
             $this->accessToken,
             $this->accessTokenSecret
         );
+
+        $this->connection->setDecodeJsonAsArray($this->decodeJsonAsArray);
     }
 
     public function getConnection(){
@@ -87,5 +102,22 @@ class TwitterApi extends Component {
             return call_user_func_array([$connection, $name], $params);
 
         throw new UnknownMethodException('Calling unknown method: ' . get_class($connection) . "::$name()");
+    }
+
+    public function searchTweets(string $query, array $options = array(), &$metadata = null) : array {
+
+        $options['q'] = $query;
+        $result = $this->getConnection()->get(self::URL_SEARCH_TWEETS, $options);
+
+        if($metadata !== null) $metadata = $result['search_metadata'] ?? array();
+        if($this->tweetModelClass !== null){
+            $modelClass = $this->tweetModelClass;
+            $tweets = array();
+            foreach ($result['statuses'] as $data) $tweets[] = new $modelClass($data);
+            return $tweets;
+        }
+        else{
+            return $result['statuses'];
+        }
     }
 }
