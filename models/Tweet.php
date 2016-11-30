@@ -89,7 +89,7 @@ class Tweet {
                 continue;
             }
 
-            $tokens[] = $lowercase ?  strtolower($value) : $value;
+            $tokens[] = \Normalizer::normalize($lowercase ?  strtolower($value) : $value);
         }
 
         return $tokens;
