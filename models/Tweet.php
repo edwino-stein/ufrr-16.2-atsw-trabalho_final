@@ -6,12 +6,12 @@ use yii\helpers\BaseInflector;
 
 class Tweet {
 
+    const URL_TOKENS_REGEX = '(http[s]?:\\/(?:[a-z]|[0-9]|[$-_@.&amp;+]|[!*\(\),]|(?:%[0-9a-f][0-9a-f]))+)';
     const TOKENS_REGEX = array(
         '(<[^>]+>)', //HTML tags
         '(?:@[\w_]+)', //@-mentions
         "(?:\#+[\w_]+[\w\'_\-]*[\w_]+)", //hash-tags
         '(?:[:=;][oO\-]?[D\\)\\]\\(\\]\/\\OpP])', //emoticons
-        '(http[s]?:\\/(?:[a-z]|[0-9]|[$-_@.&amp;+]|[!*\(\),]|(?:%[0-9a-f][0-9a-f]))+)', //URLs
         '(?:(?:\d+,?)+(?:\.?\d+)?)', //numbers
         '(?:[a-zA-Z_\-áÁàÀâÂéÉèÈêÊíÍìÌîÎóÓòÒôÔúÚùÙûÛçÇ]+)', //words
         '(?:\S)' //anything else
@@ -75,7 +75,7 @@ class Tweet {
 
     public function getTokens(bool $lowercase = false){
 
-        $pattern = '/'.implode('|', self::TOKENS_REGEX).'/';
+        $pattern = '/'.self::URL_TOKENS_REGEX.'|'.implode('|', self::TOKENS_REGEX).'/';
         $patternEspecial = '/'.self::TOKENS_REGEX[1].'|'.self::TOKENS_REGEX[2].'|'.self::TOKENS_REGEX[3].'/';
 
         $matches = array();
@@ -84,6 +84,7 @@ class Tweet {
 
         foreach ($matches[0] as $value){
 
+            if(preg_match(self::URL_TOKENS_REGEX, $value) >= 1) continue;
             if(preg_match($patternEspecial, $value) >= 1){
                 $tokens[] = $value;
                 continue;
