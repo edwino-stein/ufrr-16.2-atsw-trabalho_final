@@ -37,6 +37,12 @@ class Tweet {
     protected $createdAt;
 
     /**
+     * @var array
+     * @TODO: fazer uma model pra user
+     */
+    protected $user;
+
+    /**
      * @var int
      */
     protected $id;
@@ -126,6 +132,19 @@ class Tweet {
         return $this->entities;
     }
 
+    public function getUser(bool $simple = true){
+        return $simple ? array(
+            'id' => $this->user['id'],
+            'name' => $this->user['name'],
+            'screen_name' => $this->user['screen_name'],
+            'location' => $this->user['location'],
+            'description' => $this->user['description'],
+            'url' => $this->user['url'],
+            'profile_image_url' => $this->user['profile_image_url'],
+            'profile_image_url_https' => $this->user['profile_image_url']
+        ) : $this->user;
+    }
+
     public function getOriginalData(){
         return $this->originalData;
     }
@@ -170,5 +189,23 @@ class Tweet {
     public function setEntities(array $entities){
         $this->entities = $entities;
         return $this;
+    }
+
+    public function setUser(array $user){
+        $this->user = $user;
+        return $this;
+    }
+
+    public function toArray(bool $simple = true) : array {
+        return $simple ? array(
+            'created_at' => $this->getCreatedAt(),
+            'id' => $this->getId(),
+            'text' => $this->getText(),
+            'retweet_count' => $this->getFavoriteCount(),
+            'favorite_count' => $this->getFavoriteCount(),
+            'lang' => $this->getLang(),
+            'entities' => $this->getEntities(),
+            'user' => $this->getUser(true)
+        ) : $this->getOriginalData();
     }
 }
