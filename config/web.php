@@ -43,15 +43,13 @@ $config = [
             'accessToken' => '796543085786308608-Bi4A9VM4YtJUUzpxvK19Luq06PR7BTY',
             'accessTokenSecret' => 'FhvnwrcJXtUDB1ovpyNW4X3AIzaTcPCYZjdOM6jMqmKPZ',
             'tweetModelClass' => app\models\Tweet::class
-        ]
-        /*
+        ],
         'urlManager' => [
+            'class' => 'yii\web\UrlManager',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
-            ],
-        ],
-        */
+            'rules' => [],
+        ]
     ],
     'params' => ['adminEmail' => 'admin@example.com'],
 ];

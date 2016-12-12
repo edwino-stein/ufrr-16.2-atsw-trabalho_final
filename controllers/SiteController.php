@@ -59,8 +59,7 @@ class SiteController extends Controller
      * @return string
      */
     public function actionIndex(){
-        var_dump(Yii::$app->twitter->get(TwitterApi::URL_STATUSES_TIMELINE));
-        // return $this->render('index');
+        return $this->render('index');
     }
 
     /**
