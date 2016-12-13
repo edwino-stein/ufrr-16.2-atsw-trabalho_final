@@ -30,26 +30,15 @@ AppAsset::register($this);
         'brandLabel' => 'Arquitetura Web',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar-inverse',
+            'class' => 'navbar-default navbar-static-top',
         ],
     ]);
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
+        'options' => ['class' => 'navbar-nav navbar-right', 'id' => 'tab-panel'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
+            ['label' => 'Inicio', 'linkOptions' => ['data-view' => '#home'], 'active' => true],
+            ['label' => 'Buscar', 'linkOptions' => ['data-view' => '#query']],
+            ['label' => 'Word Counter', 'linkOptions' => ['data-view' => '#wordcounter']],
         ],
     ]);
     NavBar::end();
