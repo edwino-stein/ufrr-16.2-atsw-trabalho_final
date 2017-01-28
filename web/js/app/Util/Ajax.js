@@ -11,6 +11,7 @@ App.define('Util.Ajax',{
             dataType = config.dataType ? config.dataType: this.defaultDataType,
             failAction = config.fail ? config.fail : function () {},
             successAction = config.success,
+            completeAction = config.complete ? config.complete : function(){},
             data = config.data ? config.data : null,
             contentType = config.contentType !== null ? config.contentType : this.defaultContentType,
             processData = config.processData !== null ? config.processData : this.defaultProcessData;
@@ -33,7 +34,8 @@ App.define('Util.Ajax',{
                     failAction(request);
                 }
             },
-            error: failAction
+            error: failAction,
+            complete: completeAction
         });
     }
 });
