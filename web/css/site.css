@@ -3,6 +3,23 @@ body {
     height: 100%;
 }
 
+#query-input-abstract{
+    display: none;
+}
+
+#query .report {
+    text-align: right;
+    /*display: none;*/
+}
+
+#query .message {
+    text-align: center;
+}
+
+#query .results {
+    /*display: none;*/
+}
+
 .wrap {
     min-height: 100%;
     height: auto;
