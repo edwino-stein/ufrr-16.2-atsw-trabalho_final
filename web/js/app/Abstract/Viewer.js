@@ -12,6 +12,10 @@ App.define('Abstract.Viewer',{
         return;
     },
 
+    render: function(){
+        return;
+    },
+
     ready: function(){
         var me = this;
 
@@ -28,5 +32,6 @@ App.define('Abstract.Viewer',{
         var me = this;
         me.$domObj = $(me.$domObj);
         me.viewPort = this._appRoot_.get(me.viewPort);
+        me.render();
     }
 });
