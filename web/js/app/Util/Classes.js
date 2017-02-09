@@ -4,6 +4,8 @@ App.define('Util.Classes',{
 
     Time: function Time(dateString){
 
+        if(typeof(dateString) === 'object' && dateString.date) dateString = dateString.date;
+
         if(typeof(dateString) === 'string'){
 
             var timeStamp = Date.parse(dateString.replace(' ', 'T')+'Z');
