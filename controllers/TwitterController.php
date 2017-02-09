@@ -43,7 +43,7 @@ class TwitterController extends Controller {
         $tweets = Yii::$app->twitter->searchTweets($q, array('count' => $count));
         foreach ($tweets as $key => $t) $tweets[$key] = $t->toArray(true);
 
-        return $tweets;
+        return array('success' => true, 'data' => $tweets);
     }
 
     public function actionWordcount(){
