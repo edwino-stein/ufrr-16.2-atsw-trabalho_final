@@ -9,10 +9,12 @@ $this->registerJsFile($baseUrl.'/js/app/app.js');
 ?>
 
 <div id="viewport" class="tab-content">
+
     <div role="tabpanel" class="tab-pane active" id="home">
         Home
     </div>
-    <div role="tabpanel" class="tab-pane" id="query">
+
+    <div role="tabpanel" class="tab-pane" id="query"> <!-- Query Tab -->
         <div class="page-header">
           <h2>Buscar por algum tema</h2>
         </div>
@@ -24,22 +26,43 @@ $this->registerJsFile($baseUrl.'/js/app/app.js');
             <div class="panel-heading report">
                 Total de <strong class="counter">0</strong> tweet(s)
             </div>
-            <div class="panel-body message">
-                <h1>Nenhum resultado</h1>
-            </div>
+            <div class="panel-body message"></div>
             <ul class="list-group results">
-                <li class="list-group-item">
-                    <h4>Tweet text 1</h4>
-                </li>
-                <li class="list-group-item">
-                    <h4>Tweet text 2</h4>
-                </li>
-                <li class="list-group-item">
-                    <h4>Tweet text 3</h4>
+                <li id="tweet-model" class="list-group-item">
+                    <div class="container-fluid tweet">
+                        <div class="col-xs-12 meta">
+                            <div class="col-xs-7 user-info">
+                                <div class="thumbnail avatar">
+                                    <img src="" >
+                                </div>
+                                <div class="user">
+                                    <p class="name"></p>
+                                    <p class="nick"></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-5 info">
+                                <div class="date"></div>
+                                <div class="indicators">
+                                    <span class="likes">
+                                        <i class="glyphicon glyphicon-heart"></i>
+                                        <span class="counter"></span>
+                                    </span>
+                                    <span class="retweeties">
+                                        <i class="glyphicon glyphicon-retweet"></i>
+                                        <span class="counter"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 data">
+                            <div class="col-xs-12 text"></div>
+                        </div>
+                    </div>
                 </li>
             </ul>
         </div>
-    </div>
+    </div> <!-- FIM Query Tab -->
+
     <div role="tabpanel" class="tab-pane" id="wordcounter">
         wordcounter
     </div>
