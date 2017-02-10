@@ -57,7 +57,9 @@ class TwitterController extends Controller {
         $stopWords = '/'.implode('|', $stopWords).'/';
 
         $tweets = Yii::$app->twitter->searchTweets($q, array('count' => $count));
+        $tweetsTotal = count($tweets);
         $words = array();
+        $wordsTotal = 0;
 
         foreach ($tweets as $t) {
             $tokens = $t->getTokens(true);
@@ -65,9 +67,17 @@ class TwitterController extends Controller {
                 if(preg_match($stopWords, $w)) continue;
                 if(isset($words[$w])) $words[$w]++;
                 else $words[$w] = 1;
+                $wordsTotal++;
             }
         }
 
-        return $words;
+        return array(
+            'success' => true,
+            'data' => array(
+                'words' => $words,
+                'totalWords' => $wordsTotal,
+                'totalTweets' => $tweetsTotal
+            )
+        );
     }
 }
