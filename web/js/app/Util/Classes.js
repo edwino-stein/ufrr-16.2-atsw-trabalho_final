@@ -77,10 +77,12 @@ App.define('Util.Classes',{
 
     QueryInput: function QueryInput (renderTo, config){
 
-        if(typeof(QueryInput.initted) !== 'bool' || !QueryInput.initted){
-            QueryInput.domObj = $('#query-input-abstract').removeAttr('id').remove();
-            QueryInput.instanceCounter = 0;
-            QueryInput.initted = true;
+        if(typeof(window.QueryInputCfg) !== 'object'){
+            window.QueryInputCfg = {
+                initted: false,
+                domObj: $('#query-input-abstract').removeAttr('id').remove(),
+                instanceCounter: 0
+            };
         }
 
         var me = this;
@@ -96,7 +98,7 @@ App.define('Util.Classes',{
         me.config.onAfterQuery = typeof(config.onAfterQuery) !== 'function' ? function(){  me.disableQuery(false); } : config.onAfterQuery;
         me.config.onQueryError = typeof(config.onQueryError) !== 'function' ? function(){ console.log(arguments); } : config.onQueryError;
 
-        me.domObj = QueryInput.domObj.clone();
+        me.domObj = window.QueryInputCfg.domObj.clone();
         me.disabled = false;
 
         me.disableQuery = function(disabled){
@@ -152,7 +154,7 @@ App.define('Util.Classes',{
         me.setPlaceholder(me.config.placeholder);
         $(renderTo).append(me.domObj);
         me.disableQuery(false);
-        QueryInput.instanceCounter++;
+        window.QueryInputCfg.instanceCounter++;
     },
 
     getInstance: function(className){
