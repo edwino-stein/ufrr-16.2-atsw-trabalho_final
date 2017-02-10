@@ -157,6 +157,75 @@ App.define('Util.Classes',{
         window.QueryInputCfg.instanceCounter++;
     },
 
+    ColorPallet: function ColorPallet(){
+
+        var baseColors = ["red", "orange", "yellow", "green", "aqua", "blue", "violet", "red"];
+        var colorInterval = 1/baseColors.length;
+        var colorRange = 500;
+
+        function Color(colorArray){
+            this.colorArray = colorArray;
+
+            this.getRed = function(hex){
+                if(hex) return (this.colorArray[0] < 16 ? '0' : '') + this.colorArray[0].toString(16);
+                return this.colorArray[0];
+            };
+
+            this.getGreen = function(hex){
+                if(hex) return (this.colorArray[1] < 16 ? '0' : '') + this.colorArray[1].toString(16);
+                return this.colorArray[1]
+            };
+
+            this.getBlue = function(hex){
+                if(hex) return (this.colorArray[2] < 16 ? '0' : '') + this.colorArray[2].toString(16);
+                return this.colorArray[2]
+            };
+
+            this.getRGB = function(){
+                return [
+                    this.getRed(),
+                    this.getGreen(),
+                    this.getBlue(),
+                ];
+            };
+
+            this.getHex = function(){
+                return '#'+this.getRed(true)+this.getGreen(true)+this.getBlue(true);
+            };
+        }
+
+        this.canvas = $.parseHTML('<canvas width="'+colorRange+'" height="1"></canvas>')[0];
+        this.context = this.canvas.getContext("2d");
+
+        //$('#viewport').append(this.canvas);
+
+        var gradient = this.context.createLinearGradient(0, 0, colorRange, 0);
+        for(var i in baseColors){
+            gradient.addColorStop(i*colorInterval, baseColors[i]);
+        }
+
+        this.context.fillStyle = gradient;
+        this.context.fillRect(0, 0, colorRange, 1);
+
+        this.getColor = function(offset){
+            var maxColor = colorRange;
+            if(offset >= maxColor) offset = offset - maxColor;
+            if(offset < 0) offset = maxColor + offset;
+
+            var color = this.context.getImageData(offset, 0, 1, 1).data;
+            $('#color').css('background-color', 'rgb('+color[0]+','+color[1]+','+color[2]+')')
+            return new Color(color);
+        };
+
+        this.getColorByTonality = function(tonality, offset){
+
+            tonality = (baseColors.indexOf(tonality) * colorInterval * colorRange) - 1;
+            if(tonality < 0) tonality = 0;
+
+            return this.getColor(tonality + offset);
+        };
+    },
+
     getInstance: function(className){
 
         if(this.instantiable.indexOf(className) < 0)

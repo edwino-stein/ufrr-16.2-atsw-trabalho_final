@@ -77,7 +77,7 @@ $this->registerJsFile($baseUrl.'/js/app/app.js');
                 Total de <strong class="word-counter">0</strong> palavra(s), a partir de <strong class="tweet-counter">0</strong> tweet(s)
             </div>
             <div class="panel-body message">Message</div>
-            <div class="panel-body chart"><canvas></canvas></div>
+            <div class="panel-body chart"></div>
             <table class="table table-hover table-striped results">
                 <thead>
                     <tr>

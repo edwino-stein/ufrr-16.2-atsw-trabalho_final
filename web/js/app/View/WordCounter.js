@@ -1,15 +1,19 @@
 App.define('View.WordCounter',{
 
+    colorPallet: 'ColorPallet',
+
     $domObj: '#wordcounter',
     $tableRowModel: '#wordcounter-model',
     queryInput: 'query-wordcounter',
     queryUrl: 'twitter/wordcount',
-    maxTweets: 15,
+    maxTweets: 100,
 
     emptyMessage: '<h3>Busque por algum tema utilizando a caixa acima</h3>',
     notFoundMessage: '<h3>Nenhum resultado</h3>',
     waitingMessage: '<h3>Por favor, aguarde...</h3>',
     errorMessage: '<h3>Ocorreu um erro durante a consulta</h3>',
+
+    chartObj: null,
 
     render: function(){
         var me = this;
@@ -35,9 +39,15 @@ App.define('View.WordCounter',{
     },
 
     onQuery: function(data){
+
+        var d = [], model;
         for(var i in data.words){
-            this.addViewModel(this.createTweetViewModel({word: i, amount: data.words[i]}));
+            model = {word: i, amount: data.words[i]};
+            this.addViewModel(this.createTweetViewModel(model));
+            d.push(model);
         }
+
+        this.renderChart(d, true);
 
         this.showReport(data.totalWords, data.totalTweets);
 
@@ -52,7 +62,6 @@ App.define('View.WordCounter',{
 
     createTweetViewModel: function(model){
         var view = this.$tableRowModel.clone();
-        console.log(model);
         view.find('.word').html(model.word);
         view.find('.amount').html(model.amount);
         return view[0];
@@ -89,7 +98,64 @@ App.define('View.WordCounter',{
     },
 
     cleanResults: function(){
-        this.$domObj.find('.results tbody .tr').remove();
+        this.$domObj.find('.results tbody tr').remove();
+    },
+
+    renderChart: function (data, show){
+        this.destroyChart();
+        if(show) this.showChart();
+
+        var canvas = $.parseHTML('<canvas></canvas>')[0];
+        this.$domObj.find('.chart').append(canvas);
+
+        var labels = [],
+            values = [],
+            backgroundColor = [],
+            baseColors = ["red", "orange", "yellow", "green", "aqua", "blue", "violet"],
+            colorIndex = Math.floor((Math.random() * (baseColors.length -1)) + 1),
+            colorOffset = 1,
+            color = null;
+
+        for(var i in data){
+            labels.push(data[i].word);
+            values.push(data[i].amount);
+
+            color = this.colorPallet.getColorByTonality(baseColors[colorIndex++], colorOffset);
+
+            if(colorIndex >= baseColors.length){
+                colorIndex = 0;
+                colorOffset += 10;
+            }
+
+            backgroundColor.push(color.getHex());
+        }
+
+        Chart.defaults.global.legend.display = false;
+        this.chartObj = new Chart(canvas, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'My dataset',
+                    data: values,
+                    backgroundColor: backgroundColor
+                }]
+            },
+        });
+    },
+
+    showChart: function (){
+        this.$domObj.find('.chart').show();
+    },
+
+    hideChart: function (destroy){
+        this.$domObj.find('.chart').hide();
+        if(destroy) this.destroyChart();
+    },
+
+    destroyChart: function (){
+        this.chartObj = null;
+        this.$domObj.find('.chart *').remove();
     },
 
     onSelected: function(id, obj, e){
@@ -102,6 +168,7 @@ App.define('View.WordCounter',{
 
     ready: function(){
         this.callSuper();
+        this.colorPallet = this._appRoot_.get('Util.Classes').getInstance(this.colorPallet);
         this.showMessage(this.emptyMessage);
     },
 
