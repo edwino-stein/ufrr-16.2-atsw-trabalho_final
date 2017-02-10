@@ -14,7 +14,8 @@ $this->registerJsFile($baseUrl.'/js/app/app.js');
         Home
     </div>
 
-    <div role="tabpanel" class="tab-pane" id="query"> <!-- Query Tab -->
+    <!-- Query Tab -->
+    <div role="tabpanel" class="tab-pane" id="query">
         <div class="page-header">
           <h2>Buscar por algum tema</h2>
         </div>
@@ -63,9 +64,37 @@ $this->registerJsFile($baseUrl.'/js/app/app.js');
         </div>
     </div> <!-- FIM Query Tab -->
 
+    <!-- Wordcounter Tab -->
     <div role="tabpanel" class="tab-pane" id="wordcounter">
-        wordcounter
-    </div>
+        <div class="page-header">
+          <h2>Análise por contagem de palavras</h2>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="query"></div>
+            </div>
+            <div class="panel-heading report">
+                Total de <strong class="word-counter">0</strong> palavra(s), a partir de <strong class="tweet-counter">0</strong> tweet(s)
+            </div>
+            <div class="panel-body message">Message</div>
+            <div class="panel-body chart"><canvas></canvas></div>
+            <table class="table table-hover table-striped results">
+                <thead>
+                    <tr>
+                        <th width="75%">Palavra</th>
+                        <th width="25%">Quantidade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="wordcounter-model">
+                        <td class="word">Key</td>
+                        <td class="amount">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div><!-- FIM Wordcounter Tab -->
+
 </div>
 
 <div id="query-input-abstract">

@@ -86,3 +86,35 @@
     margin: 10px 0;
     text-align: justify;
 }
+
+/* ************* Wordcounter Tab ************* */
+
+#wordcounter-model{
+    display: none;
+}
+
+#wordcounter .report {
+    text-align: right;
+    display: none;
+}
+
+#wordcounter .message {
+    text-align: center;
+}
+
+#wordcounter .results {
+    display: none;
+}
+
+#wordcounter .chart{
+    text-align: center;
+    display: none;
+}
+
+#wordcounter .chart canvas{
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 500px !important;
+    max-height: 500px !important;
+    display: inline-block !important;
+}
