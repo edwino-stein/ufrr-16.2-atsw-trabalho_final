@@ -3,19 +3,9 @@
 namespace app\models;
 
 use yii\helpers\BaseInflector;
+use app\models\TokenValidator;
 
 class Tweet {
-
-    const URL_TOKENS_REGEX = '(http[s]?:\\/(?:[a-z]|[0-9]|[$-_@.&amp;+]|[!*\(\),]|(?:%[0-9a-f][0-9a-f]))+)';
-    const TOKENS_REGEX = array(
-        '(<[^>]+>)', //HTML tags
-        '(?:@[\w_]+)', //@-mentions
-        "(?:\#+[\w_]+[\w\'_\-]*[\w_]+)", //hash-tags
-        '(?:[:=;][oO\-]?[D\\)\\]\\(\\]\/\\OpP])', //emoticons
-        '(?:(?:\d+,?)+(?:\.?\d+)?)', //numbers
-        '(?:[a-zA-Z_\-áÁàÀâÂéÉèÈêÊíÍìÌîÎóÓòÒôÔúÚùÙûÛçÇ]+)', //words
-        '(?:\S)' //anything else
-    );
 
     protected static function initFromArray(Tweet $obj, array $data){
         $objMap = array_keys(get_class_vars(self::class));
@@ -81,22 +71,49 @@ class Tweet {
 
     public function getTokens(bool $lowercase = false){
 
-        $pattern = '/'.self::URL_TOKENS_REGEX.'|'.implode('|', self::TOKENS_REGEX).'/';
-        $patternEspecial = '/'.self::TOKENS_REGEX[1].'|'.self::TOKENS_REGEX[2].'|'.self::TOKENS_REGEX[3].'/';
-
-        $matches = array();
-        $result = preg_match_all($pattern, $this->getText(), $matches);
+        $subjects = TokenValidator::splitSpaces($this->getText());
         $tokens = array();
 
-        foreach ($matches[0] as $value){
+        foreach ($subjects as $s) {
 
-            if(preg_match(self::URL_TOKENS_REGEX, $value) >= 1) continue;
-            if(preg_match($patternEspecial, $value) >= 1){
-                $tokens[] = $value;
+            if(TokenValidator::is($s, array(TokenValidator::PUNCTUATION))){
+                $tokens[] = $s;
                 continue;
             }
 
-            $tokens[] = \Normalizer::normalize($lowercase ?  strtolower($value) : $value);
+            if(TokenValidator::is($s, array(TokenValidator::URL, TokenValidator::EMOTICONS))){
+                $tokens[] = $s;
+                continue;
+            }
+
+            if(TokenValidator::is($s, array(TokenValidator::HASHTAG, TokenValidator::MENTIONS))){
+
+                $type = $s[0];
+                $s = TokenValidator::splitPunctuarion(substr($s, 1));
+                $s[0] = \Normalizer::normalize($s[0]);
+                if(!is_string($s[0])) continue;
+
+                $tokens[] = $type.array_shift($s);
+                foreach ($s as $w) {
+                    $w = \Normalizer::normalize($lowercase ?  strtolower($w) : $w);
+                    if(!is_string($w)) continue;
+                    $tokens[] = $w;
+                }
+
+                continue;
+            }
+
+            if(TokenValidator::is($s, array(TokenValidator::NUMERIC))){
+                $tokens[] = $s;
+                continue;
+            }
+
+            $s = TokenValidator::splitPunctuarion($s);
+            foreach ($s as $w) {
+                $w = \Normalizer::normalize($lowercase ?  strtolower($w) : $w);
+                if(!is_string($w)) continue;
+                $tokens[] = $w;
+            }
         }
 
         return $tokens;

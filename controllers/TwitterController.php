@@ -61,7 +61,7 @@ class TwitterController extends Controller {
         $words = array();
         $wordsTotal = 0;
 
-        foreach ($tweets as $t) {
+        foreach ($tweets as $key => $t) {
             $tokens = $t->getTokens(true);
             foreach ($tokens as $w) {
                 if(preg_match($stopWords, $w)) continue;
