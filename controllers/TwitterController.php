@@ -82,4 +82,38 @@ class TwitterController extends Controller {
             )
         );
     }
+
+    public function actionHashtagcount(){
+        $request = Yii::$app->request;
+        $q = $request->get('q', null);
+        $count = $request->get('count', 15);
+        if($q === null) return array();
+
+        $stopWords = json_decode(file_get_contents(__DIR__."/../models/stop-words.json"));
+        $stopWords = '/'.implode('|', $stopWords).'/';
+
+        $tweets = Yii::$app->twitter->searchTweets($q, array('count' => $count));
+        $tweetsTotal = count($tweets);
+        $hashtags = array();
+        $hashtagsTotal = 0;
+
+        foreach ($tweets as $key => $t) {
+            $tokens = $t->getTokens(true);
+            foreach ($tokens as $w) {
+                if(!TokenValidator::is($w, array(TokenValidator::HASHTAG, TokenValidator::MENTIONS))) continue;
+                if(isset($hashtags[$w])) $hashtags[$w]++;
+                else $hashtags[$w] = 1;
+                $hashtagsTotal++;
+            }
+        }
+
+        return array(
+            'success' => true,
+            'data' => array(
+                'hashtags' => $hashtags,
+                'hashtagsTotal' => $hashtagsTotal,
+                'totalTweets' => $tweetsTotal
+            )
+        );
+    }
 }
