@@ -118,3 +118,35 @@
     max-height: 500px !important;
     display: inline-block !important;
 }
+
+/* ************* Hashtagcounter Tab ************* */
+
+#hashcounter-model{
+    display: none;
+}
+
+#hashcounter .report {
+    text-align: right;
+    display: none;
+}
+
+#hashcounter .message {
+    text-align: center;
+}
+
+#hashcounter .results {
+    display: none;
+}
+
+#hashcounter .chart{
+    text-align: center;
+    display: none;
+}
+
+#hashcounter .chart canvas{
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 500px !important;
+    max-height: 500px !important;
+    display: inline-block !important;
+}

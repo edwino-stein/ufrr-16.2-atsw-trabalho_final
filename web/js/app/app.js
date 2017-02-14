@@ -7,7 +7,8 @@
             'View.Viewport',
             'View.Home',
             'View.Query',
-            'View.WordCounter'
+            'View.WordCounter',
+            'View.HashtagCounter'
         ],
         modulesPath: 'js/app/'
     });

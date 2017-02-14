@@ -39,6 +39,7 @@ AppAsset::register($this);
             ['label' => 'Inicio', 'linkOptions' => ['data-view' => '#home'], 'active' => true],
             ['label' => 'Buscar', 'linkOptions' => ['data-view' => '#query']],
             ['label' => 'Word Counter', 'linkOptions' => ['data-view' => '#wordcounter']],
+            ['label' => 'Hashtag Counter', 'linkOptions' => ['data-view' => '#hashcounter']],
         ],
     ]);
     NavBar::end();

@@ -95,6 +95,37 @@ $this->registerJsFile($baseUrl.'/js/app/app.js');
         </div>
     </div><!-- FIM Wordcounter Tab -->
 
+    <!-- Hashtagcounter Tab -->
+    <div role="tabpanel" class="tab-pane" id="hashcounter">
+        <div class="page-header">
+          <h2>Análise por contagem de hashtags e menções</h2>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="query"></div>
+            </div>
+            <div class="panel-heading report">
+                Total de <strong class="hashtags-counter">0</strong> hashtag(s), a partir de <strong class="tweet-counter">0</strong> tweet(s)
+            </div>
+            <div class="panel-body message">Message</div>
+            <div class="panel-body chart"></div>
+            <table class="table table-hover table-striped results">
+                <thead>
+                    <tr>
+                        <th width="75%">#Hastag/@Menção</th>
+                        <th width="25%">Quantidade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="hashcounter-model">
+                        <td class="hashtag">Key</td>
+                        <td class="amount">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div><!-- FIM Hashtagcounter Tab -->
+
 </div>
 
 <div id="query-input-abstract">
