@@ -28,6 +28,7 @@ App.define('View.WordCounter',{
                 me.cleanResults();
                 me.hideResults();
                 me.hideReport();
+                me.hideChart(true);
             },
             onQuery: function(data, request){
                 me.onQuery(data);
@@ -40,24 +41,70 @@ App.define('View.WordCounter',{
 
     onQuery: function(data){
 
-        var d = [], model;
-        for(var i in data.words){
-            model = {word: i, amount: data.words[i]};
-            this.addViewModel(this.createTweetViewModel(model));
-            d.push(model);
+        var totalWords = data.totalWords,
+            totalTweets = data.totalTweets;
+
+        data = this.preProcessData(data.words);
+
+        for(var i in data.sorted){
+            this.addViewModel(this.createTweetViewModel(data.sorted[i]));
         }
 
-        this.renderChart(d, true);
+        this.renderChart(data.chart, true);
 
-        this.showReport(data.totalWords, data.totalTweets);
+        this.showReport(totalWords, totalTweets);
 
-        if(data.totalTweets > 0){
+        if(totalWords > 0){
             this.hideMessage();
             this.showResults();
         }
         else{
             this.showMessage(this.notFoundMessage);
         }
+    },
+
+    preProcessData: function(data){
+
+        var list = [];
+        var a = {};
+        var t = 0;
+
+        for(var i in data){
+            list.push({word: i, amount: data[i]});
+            if(typeof(a[data[i]]) !== "number") a[data[i]] = 0;
+            a[data[i]] += data[i];
+            t += data[i];
+        }
+
+        var group = Math.ceil(t/list.length) + 1;
+
+        list.sort(function(a, b){
+            return (a.amount - b.amount)*(-1);
+        });
+
+        var chart = [];
+
+        for(var i in list){
+
+            if(list[i].amount > group){
+                chart.push(list[i]);
+                continue;
+            }
+
+            if(typeof(a[list[i].amount]) !== "number") continue;
+
+            chart.push({
+                word: "Agrupamento com "+list[i].amount+" ocorrencias",
+                amount: a[list[i].amount]
+            });
+
+            a[list[i].amount] = null;
+        }
+
+        return {
+            sorted: list,
+            chart: chart
+        };
     },
 
     createTweetViewModel: function(model){
@@ -156,14 +203,6 @@ App.define('View.WordCounter',{
     destroyChart: function (){
         this.chartObj = null;
         this.$domObj.find('.chart *').remove();
-    },
-
-    onSelected: function(id, obj, e){
-        console.log('selected wordcounter');
-    },
-
-    onDeselected: function(id, obj, e){
-        console.log('deselected wordcounter');
     },
 
     ready: function(){
