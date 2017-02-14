@@ -3,7 +3,7 @@
 namespace app\models;
 
 use yii\helpers\BaseInflector;
-use app\models\TokenValidator;
+use app\services\TokenValidator;
 
 class Tweet {
 
