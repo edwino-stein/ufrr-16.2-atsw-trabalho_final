@@ -10,6 +10,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 
 use app\services\TwitterApi;
+use app\services\TokenValidator;
 
 class TwitterController extends Controller {
 
@@ -64,6 +65,7 @@ class TwitterController extends Controller {
         foreach ($tweets as $key => $t) {
             $tokens = $t->getTokens(true);
             foreach ($tokens as $w) {
+                if(TokenValidator::is($w, array(TokenValidator::HASHTAG, TokenValidator::MENTIONS, TokenValidator::URL))) continue;
                 if(preg_match($stopWords, $w)) continue;
                 if(isset($words[$w])) $words[$w]++;
                 else $words[$w] = 1;
