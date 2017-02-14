@@ -116,4 +116,56 @@ class TwitterController extends Controller {
             )
         );
     }
+
+    public function actionCooccurrences(){
+
+        $request = Yii::$app->request;
+        $q = $request->get('q', null);
+        $count = $request->get('count', 15);
+        if($q === null) return array();
+
+        $stopWords = json_decode(file_get_contents(__DIR__."/../models/stop-words.json"));
+        $stopWords = '/'.implode('|', $stopWords).'/';
+
+        $tweets = Yii::$app->twitter->searchTweets($q, array('count' => $count));
+        $tweetsTotal = count($tweets);
+        $matrix = array();
+        $wordsTotal = 0;
+
+        foreach ($tweets as $key => $t) {
+
+            $tokens = $t->getTokens(true);
+            $words = array();
+            $t = 0;
+
+            foreach ($tokens as $w) {
+                if(TokenValidator::is($w, array(TokenValidator::URL))) continue;
+                if(preg_match($stopWords, $w)) continue;
+                $words[] = $w;
+                $t++;
+            }
+
+            for ($i = 0; $i < $t; $i++) {
+                for ($j = $i; $j < $t; $j++) {
+                    if($words[$i] == $words[$j]) continue;
+                    $w = array($words[$i], $words[$j]);
+                    sort($w, SORT_STRING);
+                    if(!isset($matrix[$w[0]])) $matrix[$w[0]] = array();
+                    if(!isset($matrix[$w[0]][$w[1]])) $matrix[$w[0]][$w[1]] = 0;
+                    $matrix[$w[0]][$w[1]]++;
+                }
+            }
+
+            $wordsTotal += $t;
+        }
+
+        return array(
+            'success' => true,
+            'data' => array(
+                'cooccurrences' => $matrix,
+                'totalWords' => $wordsTotal,
+                'totalTweets' => $tweetsTotal
+            )
+        );
+    }
 }
