@@ -62,6 +62,11 @@ class Tweet {
      */
     protected $entities = array();
 
+    /**
+     * @var array
+     */
+    protected $coordinates;
+
     protected $originalData;
 
     public function __construct($data = null){
@@ -149,6 +154,10 @@ class Tweet {
         return $this->entities;
     }
 
+    public function getCoordinates(){
+        return $this->coordinates;
+    }
+
     public function getUser(bool $simple = true){
         return $simple ? array(
             'id' => $this->user['id'],
@@ -205,6 +214,11 @@ class Tweet {
 
     public function setEntities(array $entities){
         $this->entities = $entities;
+        return $this;
+    }
+
+    public function setCoordinates($coordinates){
+        $this->coordinates = $coordinates;
         return $this;
     }
 
