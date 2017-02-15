@@ -40,6 +40,7 @@ AppAsset::register($this);
             ['label' => 'Buscar', 'linkOptions' => ['data-view' => '#query']],
             ['label' => 'Word Counter', 'linkOptions' => ['data-view' => '#wordcounter']],
             ['label' => 'Hashtag Counter', 'linkOptions' => ['data-view' => '#hashcounter']],
+            ['label' => 'Co-ocorrência', 'linkOptions' => ['data-view' => '#cooccurrences']],
         ],
     ]);
     NavBar::end();

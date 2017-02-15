@@ -8,7 +8,8 @@
             'View.Home',
             'View.Query',
             'View.WordCounter',
-            'View.HashtagCounter'
+            'View.HashtagCounter',
+            'View.Cooccurrences'
         ],
         modulesPath: 'js/app/'
     });

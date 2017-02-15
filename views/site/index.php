@@ -126,6 +126,45 @@ $this->registerJsFile($baseUrl.'/js/app/app.js');
         </div>
     </div><!-- FIM Hashtagcounter Tab -->
 
+    <!-- Cooccurrences Tab -->
+    <div role="tabpanel" class="tab-pane" id="cooccurrences">
+        <div class="page-header">
+          <h2>Análise por co-ocorrência de palavras</h2>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="query"></div>
+            </div>
+            <div class="panel-heading report">
+                Total de <strong class="word-counter">0</strong> palavra(s), a partir de <strong class="tweet-counter">0</strong> tweet(s)
+            </div>
+            <div class="panel-body message">Message</div>
+            <ul class="list-group results">
+                <li id="cooccurrences-model" class="list-group-item collapsed">
+                    <div class="result-header">
+                        Termo: "<strong class="word">word</strong>" |
+                        Co-ocorrências: <strong class="cooccurrences-amount">amount</strong> |
+                        Palavas: <strong class="word-amount">amount</strong>
+                    </div>
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th width="75%">Palavra</th>
+                                <th width="25%">Quantidade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="cooccurrences-model-row">
+                                <td class="word">Key</td>
+                                <td class="amount">0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </li>
+            </ul>
+        </div>
+    </div><!-- FIM Cooccurrences Tab -->
+
 </div>
 
 <div id="query-input-abstract">

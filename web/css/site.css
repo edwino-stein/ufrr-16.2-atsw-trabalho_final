@@ -150,3 +150,54 @@
     max-height: 500px !important;
     display: inline-block !important;
 }
+
+/* ************* Cooccurrences Tab ************* */
+
+#cooccurrences-model {
+    display: none;
+}
+
+#cooccurrences .results .list-group-item{
+    padding: 0;
+    color: #333;
+}
+
+#cooccurrences .results .list-group-item.collapsed table{
+    display: none;
+}
+
+#cooccurrences .results .result-header{
+    padding: 10px 15px;
+    background-color: #f5f5f5;
+    cursor: pointer;
+}
+
+#cooccurrences .results .collapsed .result-header{
+    background-color: #fff;
+}
+
+#cooccurrences .results .collapsed .result-header:hover{
+    background-color: #f5f5f5;
+}
+
+#cooccurrences .results .list-group-item table{
+    border-bottom: 1px solid #ddd;
+}
+
+#cooccurrences .results .list-group-item:last-child table{
+    margin-bottom: 0;
+    border-bottom: none;
+}
+
+#cooccurrences .report {
+    text-align: right;
+    display: none;
+}
+
+#cooccurrences .message {
+    text-align: center;
+}
+
+#cooccurrences .results {
+    display: none;
+}
