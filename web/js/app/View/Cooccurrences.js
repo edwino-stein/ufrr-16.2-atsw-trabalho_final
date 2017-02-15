@@ -5,7 +5,7 @@ App.define('View.Cooccurrences',{
     $tableRowModel: '#cooccurrences-model-row',
     queryInput: 'query-cooccurrences',
     queryUrl: 'twitter/cooccurrences',
-    maxTweets: 15,
+    maxTweets: 100,
 
     emptyMessage: '<h3>Busque por algum tema utilizando a caixa acima</h3>',
     notFoundMessage: '<h3>Nenhum resultado</h3>',
@@ -37,12 +37,52 @@ App.define('View.Cooccurrences',{
 
     onQuery: function(data){
 
+        var totalWords = data.totalWords,
+            totalTweets = data.totalTweets;
+        data = data.cooccurrences;
+
+        for(var i in data){
+            this.addViewModel(this.createTweetViewModel({word: i, cooccurrences: data[i]}));
+        }
+
+        this.showReport(totalWords, totalTweets);
+
+        if(totalWords > 0){
+            this.hideMessage();
+            this.showResults();
+        }
+        else{
+            this.showMessage(this.notFoundMessage);
+        }
     },
 
     createTweetViewModel: function(model){
+        var view = this.$dataModel.clone(),
+            table = view.find('tbody'),
+            row, amount = 0, t = 0;
+
+        view.find(".result-header").click(function(e){
+            $(this).parent('.list-group-item').toggleClass('collapsed');
+        });
+
+        for(var i in model.cooccurrences){
+            row = this.$tableRowModel.clone();
+            row.find('.word').html(i);
+            row.find('.amount').html(model.cooccurrences[i]);
+            table.append(row);
+            amount += model.cooccurrences[i];
+            t++;
+        }
+
+        view.find('.result-header .word').html(model.word);
+        view.find('.result-header .word-amount').html(t);
+        view.find('.result-header .cooccurrences-amount').html(amount);
+
+        return view[0];
     },
 
     addViewModel: function(view){
+        this.$domObj.find('.results').append(view);
     },
 
     showReport: function(words, tweets){
