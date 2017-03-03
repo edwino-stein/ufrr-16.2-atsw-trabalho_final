@@ -56,9 +56,9 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">Edwino Stein - <?= date('Y') ?></p>
+        <p class="pull-left">Desenvolvido por Edwino Stein - <?= date('Y') ?></p>
 
-        <p class="pull-right">Arquitetura Web</p>
+        <p class="pull-right">Powered by Yii Framework</p>
     </div>
 </footer>
 

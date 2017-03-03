@@ -11,7 +11,22 @@ $this->registerJsFile($baseUrl.'/js/app/app.js');
 <div id="viewport" class="tab-content">
 
     <div role="tabpanel" class="tab-pane active" id="home">
-        Home
+        <div class="page-header">
+          <h2>Trabalho de Arquitetura e Tecnologias de Sistemas Web
+              <br>
+              <small>Mineração de dados do Twitter</small>
+          </h2>
+        </div>
+
+
+        <div>
+            <ul>
+                <li><h4><strong>Instituição</strong>: Universiade Federal de Roraima</h4></li>
+                <li><h4><strong>Aluno</strong>: Edwino Alberto Lopes Stein</h4></li>
+                <li><h4><strong>Matrícula</strong>: 1201324411</h4></li>
+                <li><h4><strong>Professor</strong>: Leandro Nelinho Balico</h4></li>
+            </ul>
+        </div>
     </div>
 
     <!-- Query Tab -->
