@@ -1,6 +1,15 @@
-###Projeto de arquitetura web
+### Trabalho de Arquitetura e Tecnologias de Sistemas Web 2016.2
 
-##Instalação
+- Instituição: Universidade Federal de Roraima
+- Professor: Leandro Nelinho Balico
+- Aluno: Edwino Alberto Lopes Stein
+- Matrícula: 1201324411
+
+## Pré-requisitos:
+ - PHP 5.5+;
+ - composer;
+
+## Instalação
 
  - Instale o plugin de assets para o composer:
     $ composer global require "fxp/composer-asset-plugin:^1.2.0"
