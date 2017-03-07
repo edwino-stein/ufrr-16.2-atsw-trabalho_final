@@ -7,6 +7,8 @@ App.define('View.HashtagCounter',{
     queryInput: 'query-hashcounter',
     queryUrl: 'twitter/hashtagcount',
     maxTweets: 100,
+    chartLabel: 'Hashtags e Menções mais frequentes',
+    maxTopTerms: 20,
 
     emptyMessage: '<h3>Busque por algum tema utilizando a caixa acima</h3>',
     notFoundMessage: '<h3>Nenhum resultado</h3>',
@@ -44,24 +46,20 @@ App.define('View.HashtagCounter',{
         var hashtagsTotal = data.hashtagsTotal,
             totalTweets = data.totalTweets;
 
-        data = this.preProcessData(data.hashtags);
+        if(hashtagsTotal <= 0){
+            this.showMessage(this.notFoundMessage);
+            return;
+        }
 
+        data = this.preProcessData(data.hashtags);
         for(var i in data.sorted){
             this.addViewModel(this.createTweetViewModel(data.sorted[i]));
         }
 
-
-        this.renderChart(data.sorted, true);
-
+        this.renderChart(data.chart, true);
         this.showReport(hashtagsTotal, totalTweets);
-
-        if(hashtagsTotal > 0){
-            this.hideMessage();
-            this.showResults();
-        }
-        else{
-            this.showMessage(this.notFoundMessage);
-        }
+        this.hideMessage();
+        this.showResults();
     },
 
     preProcessData: function(data){
@@ -75,8 +73,15 @@ App.define('View.HashtagCounter',{
             return (a.amount - b.amount)*(-1);
         });
 
+        var chart = [];
+        for(var i in list){
+            if(chart.length >= this.maxTopTerms) break;
+            chart.push(list[i]);
+        }
+
         return {
             sorted: list,
+            chart: chart
         };
     },
 
@@ -150,7 +155,7 @@ App.define('View.HashtagCounter',{
             backgroundColor.push(color.getHex());
         }
 
-        Chart.defaults.global.legend.display = false;
+        // Chart.defaults.global.legend.display = false;
         this.chartObj = new Chart(canvas, {
             type: 'doughnut',
             data: {
@@ -161,6 +166,21 @@ App.define('View.HashtagCounter',{
                     backgroundColor: backgroundColor
                 }]
             },
+            options: {
+                title: {
+                    display: true,
+                    fullWidth: true,
+                    position: 'top',
+                    text: this.chartLabel,
+                    fontSize: 16,
+                    fontColor: '#333'
+                },
+                legend: {
+                    display: true,
+                    fullWidth: true,
+                    position: 'right'
+                }
+            }
         });
     },
 

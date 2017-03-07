@@ -7,6 +7,8 @@ App.define('View.WordCounter',{
     queryInput: 'query-wordcounter',
     queryUrl: 'twitter/wordcount',
     maxTweets: 100,
+    chartLabel: 'Termos mais frequentes',
+    maxTopTerms: 20,
 
     emptyMessage: '<h3>Busque por algum tema utilizando a caixa acima</h3>',
     notFoundMessage: '<h3>Nenhum resultado</h3>',
@@ -44,6 +46,11 @@ App.define('View.WordCounter',{
         var totalWords = data.totalWords,
             totalTweets = data.totalTweets;
 
+        if(totalTweets <= 0){
+            this.showMessage(this.notFoundMessage);
+            return;
+        }
+
         data = this.preProcessData(data.words);
 
         for(var i in data.sorted){
@@ -51,16 +58,9 @@ App.define('View.WordCounter',{
         }
 
         this.renderChart(data.chart, true);
-
         this.showReport(totalWords, totalTweets);
-
-        if(totalWords > 0){
-            this.hideMessage();
-            this.showResults();
-        }
-        else{
-            this.showMessage(this.notFoundMessage);
-        }
+        this.hideMessage();
+        this.showResults();
     },
 
     preProcessData: function(data){
@@ -85,6 +85,8 @@ App.define('View.WordCounter',{
         var chart = [];
 
         for(var i in list){
+
+            if(chart.length >= this.maxTopTerms) break;
 
             if(list[i].amount > group){
                 chart.push(list[i]);
@@ -177,17 +179,31 @@ App.define('View.WordCounter',{
             backgroundColor.push(color.getHex());
         }
 
-        Chart.defaults.global.legend.display = false;
         this.chartObj = new Chart(canvas, {
             type: 'doughnut',
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'My dataset',
+                    label: this.chartLabel,
                     data: values,
                     backgroundColor: backgroundColor
                 }]
             },
+            options: {
+                title: {
+                    display: true,
+                    fullWidth: true,
+                    position: 'top',
+                    text: this.chartLabel,
+                    fontSize: 16,
+                    fontColor: '#333'
+                },
+                legend: {
+                    display: true,
+                    fullWidth: true,
+                    position: 'right'
+                }
+            }
         });
     },
 
