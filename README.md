@@ -23,3 +23,5 @@
 
  - De permissão aos diretórios:
     $ chmod 0777 runtime/  web/assets
+
+ - Defina o documentRoot do servidor HTTP para o diretório web/
