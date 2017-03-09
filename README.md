@@ -6,7 +6,7 @@
 - Matrícula: 1201324411
 
 ## Pré-requisitos:
- - PHP 5.5+ com os plugins:
+ - PHP 5.6+ com os plugins:
     - intl;
     - mbstring;
     - json;
