@@ -6,7 +6,11 @@
 - Matrícula: 1201324411
 
 ## Pré-requisitos:
- - PHP 5.5+;
+ - PHP 5.5+ com os plugins:
+    - intl;
+    - mbstring;
+    - json;
+    - curl;
  - composer;
 
 ## Instalação
