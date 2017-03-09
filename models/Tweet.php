@@ -81,13 +81,14 @@ class Tweet {
 
         foreach ($subjects as $s) {
 
-            if(TokenValidator::is($s, array(TokenValidator::PUNCTUATION))){
+            if(TokenValidator::is($s, array(TokenValidator::URL, TokenValidator::EMOTICONS))){
                 $tokens[] = $s;
                 continue;
             }
 
-            if(TokenValidator::is($s, array(TokenValidator::URL, TokenValidator::EMOTICONS))){
-                $tokens[] = $s;
+            if(TokenValidator::is($s, array(TokenValidator::PUNCTUATION))){
+                $s = TokenValidator::splitPunctuarion($s);
+                $tokens = array_merge($tokens, $s);
                 continue;
             }
 
@@ -108,8 +109,9 @@ class Tweet {
                 continue;
             }
 
-            if(TokenValidator::is($s, array(TokenValidator::NUMERIC))){
-                $tokens[] = $s;
+            if(TokenValidator::is($s, array(TokenValidator::PUNCTUATION_Q, TokenValidator::NUMERIC, TokenValidator::PUNCTUATION_Q), '')){
+                $s = TokenValidator::splitPunctuarionFromNumeric($s);
+                $tokens = array_merge($tokens, $s);
                 continue;
             }
 
