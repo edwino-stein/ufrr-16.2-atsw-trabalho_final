@@ -3,12 +3,10 @@
 namespace app\controllers;
 
 use Yii;
-use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
 
+use app\models\Tweet;
 use app\services\TwitterApi;
 use app\services\TokenValidator;
 
@@ -55,7 +53,7 @@ class TwitterController extends Controller {
         if($q === null) return array();
 
         $stopWords = json_decode(file_get_contents(__DIR__."/../models/stop-words.json"));
-        $stopWords = '/'.implode('|', $stopWords).'/';
+        $stopWords = '/^('.implode('|', $stopWords).')$/';
 
         $tweets = Yii::$app->twitter->searchTweets($q, array('count' => $count));
         $tweetsTotal = count($tweets);
@@ -89,9 +87,6 @@ class TwitterController extends Controller {
         $count = $request->get('count', 15);
         if($q === null) return array();
 
-        $stopWords = json_decode(file_get_contents(__DIR__."/../models/stop-words.json"));
-        $stopWords = '/'.implode('|', $stopWords).'/';
-
         $tweets = Yii::$app->twitter->searchTweets($q, array('count' => $count));
         $tweetsTotal = count($tweets);
         $hashtags = array();
@@ -101,6 +96,7 @@ class TwitterController extends Controller {
             $tokens = $t->getTokens(true);
             foreach ($tokens as $w) {
                 if(!TokenValidator::is($w, array(TokenValidator::HASHTAG, TokenValidator::MENTIONS))) continue;
+                if(strlen($w) <= 1) continue;
                 if(isset($hashtags[$w])) $hashtags[$w]++;
                 else $hashtags[$w] = 1;
                 $hashtagsTotal++;
@@ -125,7 +121,7 @@ class TwitterController extends Controller {
         if($q === null) return array();
 
         $stopWords = json_decode(file_get_contents(__DIR__."/../models/stop-words.json"));
-        $stopWords = '/'.implode('|', $stopWords).'/';
+        $stopWords = '/^('.implode('|', $stopWords).')$/';
 
         $tweets = Yii::$app->twitter->searchTweets($q, array('count' => $count));
         $tweetsTotal = count($tweets);
