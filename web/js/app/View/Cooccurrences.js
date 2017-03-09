@@ -112,7 +112,7 @@ App.define('View.Cooccurrences',{
     },
 
     cleanResults: function(){
-        this.$domObj.find('.results tbody tr').remove();
+        this.$domObj.find('.results li').remove();
     },
 
     ready: function(){
