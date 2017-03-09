@@ -6,25 +6,13 @@ $config = [
     'bootstrap' => ['log', 'twitter'],
     'components' => [
         'request' => [
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'iPdgPYFKg9SK46AvY_6r8XN4okGnZdpa',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
-        'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
-        ],
         'errorHandler' => [
             'errorAction' => 'site/error',
-        ],
-        'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
-            // send all mails to a file by default. You have to set
-            // 'useFileTransport' to false and configure a transport
-            // for the mailer to send real emails.
-            'useFileTransport' => true,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -35,7 +23,6 @@ $config = [
                 ],
             ],
         ],
-        'db' => require(__DIR__ . '/db.php'),
         'twitter' => [
             'class' => app\services\TwitterApi::class,
             'consumerKey' => 'CdRW6cTOwy6HHu4CbgZ1JR3eS',
@@ -51,7 +38,7 @@ $config = [
             'rules' => [],
         ]
     ],
-    'params' => ['adminEmail' => 'admin@example.com'],
+    'params' => ['adminEmail' => 'edwino.stein@ufrr.br'],
 ];
 
 if (YII_ENV_DEV) {
