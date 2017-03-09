@@ -168,14 +168,9 @@ App.define('View.WordCounter',{
         for(var i in data){
             labels.push(data[i].word);
             values.push(data[i].amount);
-
-            color = this.colorPallet.getColorByTonality(baseColors[colorIndex++], colorOffset);
-
-            if(colorIndex >= baseColors.length){
-                colorIndex = 0;
-                colorOffset += 10;
-            }
-
+            color = this.colorPallet.getColorByTonality(baseColors[colorIndex], colorOffset);
+            colorOffset *= (-1);
+            colorOffset += (colorOffset <= 0 ? -1 : 1 ) * Math.floor(Math.random() * (75 - 50) + 50);
             backgroundColor.push(color.getHex());
         }
 

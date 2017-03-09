@@ -161,7 +161,7 @@ App.define('Util.Classes',{
 
         var baseColors = ["red", "orange", "yellow", "green", "aqua", "blue", "violet", "red"];
         var colorInterval = 1/baseColors.length;
-        var colorRange = 500;
+        var colorRange = 1000;
 
         function Color(colorArray){
             this.colorArray = colorArray;
@@ -197,8 +197,6 @@ App.define('Util.Classes',{
         this.canvas = $.parseHTML('<canvas width="'+colorRange+'" height="1"></canvas>')[0];
         this.context = this.canvas.getContext("2d");
 
-        //$('#viewport').append(this.canvas);
-
         var gradient = this.context.createLinearGradient(0, 0, colorRange, 0);
         for(var i in baseColors){
             gradient.addColorStop(i*colorInterval, baseColors[i]);
@@ -213,7 +211,7 @@ App.define('Util.Classes',{
             if(offset < 0) offset = maxColor + offset;
 
             var color = this.context.getImageData(offset, 0, 1, 1).data;
-            $('#color').css('background-color', 'rgb('+color[0]+','+color[1]+','+color[2]+')')
+            // $('#color').css('background-color', 'rgb('+color[0]+','+color[1]+','+color[2]+')')
             return new Color(color);
         };
 
